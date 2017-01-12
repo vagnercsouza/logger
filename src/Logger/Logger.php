@@ -6,25 +6,25 @@ use Exception;
 
 class Logger
 {
-	/*
-	 * @var string|null Logz.io API Key
-	 */
-	private $apiKey = null;
+    /*
+     * @var string|null Logz.io API Key
+     */
+    private $apiKey = null;
 
-	/*
-	 * @var boolean Bulk or single logs
-	 */
-	private $bulk = false;
+    /*
+     * @var boolean Bulk or single logs
+     */
+    private $bulk = false;
 
-	/*
-	 * @var array Bulk logs list
-	 */
-	private $bulkLogs = [];
+    /*
+     * @var array Bulk logs list
+     */
+    private $bulkLogs = [];
 
-	/**
+    /**
      * Get an instance.
      */
-	public static function getInstance()
+    public static function getInstance()
     {
         static $instance = null;
 
@@ -42,7 +42,7 @@ class Logger
      */
     public function setApiKey($apiKey)
     {
-    	$this->apiKey = $apiKey;
+        $this->apiKey = $apiKey;
     }
 
     /**
@@ -52,7 +52,7 @@ class Logger
      */
     public function setBulk($bulk)
     {
-    	$this->bulk = $bulk;
+        $this->bulk = $bulk;
     }
 
     /**
@@ -63,7 +63,7 @@ class Logger
      */
     public function info($message, array $data = [])
     {
-    	$this->log('info', $message, $data);
+        $this->log('info', $message, $data);
     }
 
     /**
@@ -74,7 +74,7 @@ class Logger
      */
     public function warning($message, array $data = [])
     {
-    	$this->log('warning', $message, $data);
+        $this->log('warning', $message, $data);
     }
 
     /**
@@ -85,7 +85,7 @@ class Logger
      */
     public function error($message, array $data = [])
     {
-    	$this->log('error', $message, $data);
+        $this->log('error', $message, $data);
     }
 
     /**
@@ -96,7 +96,7 @@ class Logger
      */
     public function debug($message, array $data = [])
     {
-    	$this->log('debug', $message, $data);
+        $this->log('debug', $message, $data);
     }
 
     /**
@@ -104,22 +104,22 @@ class Logger
      */
     public function send()
     {
-    	if (!$this->bulk) {
-    		throw new Exception('The send method only works on bulk mode.');
-    	}
+        if (!$this->bulk) {
+            throw new Exception('The send method only works on bulk mode.');
+        }
 
-    	if (count($this->bulkLogs) > 0) {
-	    	$logs = '';
+        if (count($this->bulkLogs) > 0) {
+            $logs = '';
 
-	    	foreach ($this->bulkLogs as $log) {
-	    		$data = $log['data'];
-	    		$data['type'] = $log['type'];
+            foreach ($this->bulkLogs as $log) {
+                $data = $log['data'];
+                $data['type'] = $log['type'];
 
-	    		$logs .= $this->makeLog($log['message'], $data) . "\r\n";
-	    	}
+                $logs .= $this->makeLog($log['message'], $data) . "\r\n";
+            }
 
-	    	$this->sendLog($logs);
-	    }
+            $this->sendLog($logs);
+        }
     }
 
     /**
@@ -131,18 +131,18 @@ class Logger
      */
     private function log($type, $message, array $data) 
     {
-    	if ($this->bulk) {
-    		$this->bulkLogs[] = [
-    			'type' => $type,
-    			'message' => $message,
-    			'data' => $data
-    		];
-    	} else {
-	    	$this->sendLog(
-	    		$this->makeLog($message, $data),
-	    		$type
-	    	);
-	    }
+        if ($this->bulk) {
+            $this->bulkLogs[] = [
+                'type' => $type,
+                'message' => $message,
+                'data' => $data
+            ];
+        } else {
+            $this->sendLog(
+                $this->makeLog($message, $data),
+                $type
+            );
+        }
     }
 
     /**
@@ -153,21 +153,21 @@ class Logger
      */
     private function sendLog($log, $type = '')
     {
-    	$this->validateSendLog();
+        $this->validateSendLog();
 
-    	try {
-    		$response = $this->getClient()->post('/', [
-    			'query' => [
-    				'token' => $this->apiKey,
-    				'type' => $type
-    			],
-    			'body' => $log
-    		]);
+        try {
+            $response = $this->getClient()->post('/', [
+                'query' => [
+                    'token' => $this->apiKey,
+                    'type' => $type
+                ],
+                'body' => $log
+            ]);
 
-    		echo $response->getBody();
-    	} catch (Exception $e) {
-    		echo $e->getMessage();
-    	}
+            echo $response->getBody();
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
     }
 
     /**
@@ -177,12 +177,12 @@ class Logger
      * @param array $data Additional data
      */
     private function makeLog($message, array $data = []) {
-    	return json_encode(
-    		array_merge(
-    			['message' => $message],
-    			$data
-    		)
-    	);
+        return json_encode(
+            array_merge(
+                ['message' => $message],
+                $data
+            )
+        );
     }
 
     /**
@@ -190,9 +190,9 @@ class Logger
      */
     private function validateSendLog()
     {
-    	if (!$this->apiKey) {
-	    	throw new LoggerException('You need to specify the Logz.io api key.');
-	    }
+        if (!$this->apiKey) {
+            throw new LoggerException('You need to specify the Logz.io api key.');
+        }
     }
 
     /**
@@ -202,12 +202,12 @@ class Logger
      */
     private function getClient()
     {
-    	return new \GuzzleHttp\Client([
-    		'base_uri' => 'https://listener.logz.io:8071'
-    	]);
+        return new \GuzzleHttp\Client([
+            'base_uri' => 'https://listener.logz.io:8071'
+        ]);
     }
 
-	/**
+    /**
      * Disable constructor to prevent instantiation.
      */
     protected function __construct()
