@@ -29,6 +29,12 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $logger->setApiKey('pGAizgDjilTEcjDlTsnlMNudpDaiREVe');
     }
 
+    public function testSetApplication()
+    {
+        $logger = Logger::getInstance();
+        $logger->setApplication('Logger Test');
+    }
+
     public function testSetBulk()
     {
         $logger = Logger::getInstance();

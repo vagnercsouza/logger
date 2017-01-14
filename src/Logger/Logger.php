@@ -12,6 +12,11 @@ class Logger
     private $apiKey = null;
 
     /*
+     * @var string|null Application identifier
+     */
+    private $application = null;
+
+    /*
      * @var boolean Bulk or single logs
      */
     private $bulk = false;
@@ -43,6 +48,16 @@ class Logger
     public function setApiKey($apiKey)
     {
         $this->apiKey = $apiKey;
+    }
+
+    /**
+     * Set the application identifier
+     *
+     * @param string $application
+     */
+    public function setApplication($application)
+    {
+        $this->application = $application;
     }
 
     /**
@@ -179,7 +194,10 @@ class Logger
     private function makeLog($message, array $data = []) {
         return json_encode(
             array_merge(
-                ['message' => $message],
+                [
+                    'message' => $message,
+                    'application' => $this->application
+                ],
                 $data
             )
         );
