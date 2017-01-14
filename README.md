@@ -34,18 +34,18 @@ To send a log, you need to get an instance of Logger and use one of the followin
 // Send an info log
 \Logger\Logger::getInstance()->info('My info log');
 
-// Send an warning log
+// Send a warning log
 \Logger\Logger::getInstance()->warning('My warning log');
 
 // Send an error log
 \Logger\Logger::getInstance()->error('My error log');
 
-// Send an debug log
+// Send a debug log
 \Logger\Logger::getInstance()->debug('My debug log');
 ```
 
 #### Sending multiple logs
-By default, the log is delivered to Logz.io right after you call the info, warning, error or debug functions. If you need to send more than one log, you can enable the bulk option, which will wait until you call the send function to actually deliver the logs to Logz.io.
+By default, the log is delivered to Logz.io right after you call the info, warning, error or debug functions. If you need to deliver more than one log, you can enable the bulk option, which will wait until you call the send function to actually deliver the logs to Logz.io.
 
 ```sh
 // Enable the bulk mode
@@ -67,13 +67,13 @@ If you need to send parameters with the log, you just need to pass an array as s
 // Send an info log
 \Logger\Logger::getInstance()->info('My info log', ['user' => 1213]);
 
-// Send an warning log
+// Send a warning log
 \Logger\Logger::getInstance()->warning('My warning log', ['foo' => 'bar']);
 
 // Send an error log
 \Logger\Logger::getInstance()->error('My error log', ['line' => 18]);
 
-// Send an debug log
+// Send a debug log
 \Logger\Logger::getInstance()->debug('My debug log', ['foo' => 'bar']);
 ```
 
